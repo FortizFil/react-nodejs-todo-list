@@ -11,24 +11,34 @@ import {
   CircularProgress,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import { makeStyles } from "@mui/styles";
 
 import { sagaActions } from "../../redux/saga/sagaAcions";
+
+const useStyles = makeStyles((theme) => ({
+  listWrapper: {
+    display: "block",
+    width: "700px",
+    "&.css-h4y409-MuiList-root": { marginLeft: "auto", marginRight: "auto" },
+  },
+}));
 
 const TodosTable = () => {
   const { data, isLoading } = useSelector((state) => state.todos);
   const dispatch = useDispatch();
 
+  const classes = useStyles();
+
   useEffect(() => {
     dispatch({ type: sagaActions.FETCH_TODOS });
   }, []);
-  console.log(data);
 
   return (
     <Box>
       {isLoading ? (
         <CircularProgress />
       ) : (
-        <List>
+        <List className={classes.listWrapper}>
           {data ? (
             data.result.map((el) => (
               <ListItem
@@ -42,16 +52,16 @@ const TodosTable = () => {
               >
                 <ListItemButton role={undefined} dense>
                   <ListItemText
-                    sx={{ textAlign: "center" }}
-                    primary={`Name: ${el.name}`}
+                    sx={{ textAlign: "left" }}
+                    primary={`${el.name}`}
                   />
                   <ListItemText
                     sx={{ textAlign: "center" }}
-                    primary={`Description: ${el.description}`}
+                    primary={`${el.description}`}
                   />
                   <ListItemText
                     sx={{ textAlign: "center" }}
-                    primary={`Status: ${el.status}`}
+                    primary={`${el.status}`}
                   />
                 </ListItemButton>
               </ListItem>

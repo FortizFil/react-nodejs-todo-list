@@ -6,3 +6,12 @@ export const fetchData = async () => {
   const res = await axios.get("/");
   return res.data.data;
 };
+
+export const addTodo = async (variables, status) => {
+  const res = await axios.post("/", {
+    name: variables.name,
+    description: variables.description,
+    status,
+  });
+  return res.data;
+};

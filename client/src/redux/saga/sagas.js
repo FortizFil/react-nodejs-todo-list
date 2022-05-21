@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { fetchSuccess, setIsLoading } from "../todos";
-import { fetchData } from "../../Api";
+import { fetchSuccess, setIsLoading, fetchError } from "../todos";
+import { fetchData, addTodo } from "../../Api";
 import { sagaActions } from "./sagaAcions";
 
 function* fetchTodos() {
@@ -10,7 +10,7 @@ function* fetchTodos() {
     yield put(fetchSuccess(result));
     yield put(setIsLoading(false));
   } catch (e) {
-    console.log(e);
+    yield put(fetchError(e.message));
     yield put(setIsLoading(false));
   }
 }
