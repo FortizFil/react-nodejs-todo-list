@@ -6,6 +6,7 @@ const initialState = {
   error: null,
   currentTodo: null,
   modalType: "",
+  filterParam: "",
 };
 
 const todosSlice = createSlice({
@@ -27,6 +28,9 @@ const todosSlice = createSlice({
     setModalType(state, { payload }) {
       state.modalType = payload;
     },
+    setFilter(state, { payload }) {
+      state.filterParam = payload;
+    },
   },
 });
 
@@ -36,6 +40,7 @@ export const {
   fetchError,
   setCurrentTodo,
   setModalType,
+  setFilter,
 } = todosSlice.actions;
 
 export default todosSlice.reducer;

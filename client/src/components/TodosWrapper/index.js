@@ -6,6 +6,7 @@ import { makeStyles } from "@mui/styles";
 
 import TodosTable from "../TodosTable";
 import DefaultModal from "../Modal";
+import SearchInput from "../SearchInput";
 import { addTodo, changeTodo, removeTodo } from "../../Api";
 import { setModalType, setCurrentTodo } from "../../redux/todos";
 import { sagaActions } from "../../redux/saga/sagaAcions";
@@ -69,18 +70,16 @@ const TodosWrapper = () => {
       <Box className={classes.wrapper}>
         <Box
           sx={{
-            width: "80%",
-            display: "block",
+            width: "60%",
+            display: "flex",
             marginLeft: "auto",
             marginRight: "auto",
             padding: "15px",
+            justifyContent: "space-between",
           }}
         >
-          <Button
-            variant="contained"
-            sx={{ display: "block", marginLeft: "auto" }}
-            onClick={handleClick}
-          >
+          <SearchInput />
+          <Button variant="contained" onClick={handleClick}>
             Add new todo
           </Button>
         </Box>

@@ -41,7 +41,7 @@ const columns = [
 ];
 
 const TodosTable = ({ setOpenModal }) => {
-  const { data, isLoading } = useSelector((state) => state.todos);
+  const { data, isLoading, filterParam } = useSelector((state) => state.todos);
   const dispatch = useDispatch();
 
   const classes = useStyles();
@@ -61,6 +61,13 @@ const TodosTable = ({ setOpenModal }) => {
     dispatch(setModalType("delete"));
     setOpenModal(true);
   };
+
+  const filteredData = data?.result.filter((el) =>
+    filterParam.length === 0
+      ? el
+      : el.name.toLowerCase().includes(filterParam.toLowerCase()) ||
+        el.description.toLowerCase().includes(filterParam.toLowerCase())
+  );
 
   return (
     <Box>
@@ -85,7 +92,7 @@ const TodosTable = ({ setOpenModal }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data?.result.map((row) => (
+                  {filteredData?.map((row) => (
                     <TableRow key={row._id}>
                       <TableCell
                         style={{ cursor: "pointer" }}
