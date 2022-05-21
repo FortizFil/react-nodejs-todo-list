@@ -1,7 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import AddTodoForm from "../Forms/AddTodoForm";
+import AddTodoForm from "../Forms/AddOrEditTodoForm";
 
 const style = {
   position: "absolute",
@@ -14,7 +15,8 @@ const style = {
   p: 4,
 };
 
-const DefaultModal = ({ open, handleClose, onSubmit }) => {
+const DefaultModal = ({ open, handleClose, createTodo, editTodo }) => {
+  const { modalType } = useSelector((state) => state.todos);
   return (
     <Modal
       open={open}
@@ -23,7 +25,11 @@ const DefaultModal = ({ open, handleClose, onSubmit }) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <AddTodoForm handleClose={handleClose} submitForm={onSubmit} />
+        {modalType === "create" ? (
+          <AddTodoForm handleClose={handleClose} submitForm={createTodo} />
+        ) : (
+          <AddTodoForm handleClose={handleClose} submitForm={editTodo} />
+        )}
       </Box>
     </Modal>
   );

@@ -1,29 +1,46 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  IconButton,
-  CircularProgress,
-} from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
+
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import ClearIcon from "@mui/icons-material/Clear";
 import { makeStyles } from "@mui/styles";
 
+import { setCurrentTodo, setModalType } from "../../redux/todos";
 import { sagaActions } from "../../redux/saga/sagaAcions";
 
 const useStyles = makeStyles((theme) => ({
   listWrapper: {
     display: "block",
-    width: "700px",
-    "&.css-h4y409-MuiList-root": { marginLeft: "auto", marginRight: "auto" },
+    width: "920px",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 }));
 
-const TodosTable = () => {
+const columns = [
+  { id: "name", label: "Name", minWidth: 200 },
+  { id: "description", label: "Description", minWidth: 500 },
+  {
+    id: "status",
+    label: "Status",
+    minWidth: 50,
+  },
+  {
+    id: "action",
+    label: "Action",
+    minWidth: 10,
+  },
+];
+
+const TodosTable = ({ setOpenModal }) => {
   const { data, isLoading } = useSelector((state) => state.todos);
   const dispatch = useDispatch();
 
@@ -33,45 +50,58 @@ const TodosTable = () => {
     dispatch({ type: sagaActions.FETCH_TODOS });
   }, []);
 
+  const dubleClick = (row) => {
+    dispatch(setCurrentTodo(row));
+    dispatch(setModalType("edit"));
+    setOpenModal(true);
+  };
   return (
     <Box>
       {isLoading ? (
         <CircularProgress />
       ) : (
-        <List className={classes.listWrapper}>
-          {data ? (
-            data.result.map((el) => (
-              <ListItem
-                key={el._id}
-                secondaryAction={
-                  <IconButton edge="end" aria-label="comments">
-                    <ClearIcon />
-                  </IconButton>
-                }
-                disablePadding
-              >
-                <ListItemButton role={undefined} dense>
-                  <ListItemText
-                    sx={{ textAlign: "left" }}
-                    primary={`${el.name}`}
-                  />
-                  <ListItemText
-                    sx={{ textAlign: "center" }}
-                    primary={`${el.description}`}
-                  />
-                  <ListItemText
-                    sx={{ textAlign: "center" }}
-                    primary={`${el.status}`}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))
-          ) : (
-            <ListItem sx={{ textAlign: "center" }}>
-              <ListItemText primary={"No todos"} />
-            </ListItem>
-          )}
-        </List>
+        <>
+          <Paper className={classes.listWrapper}>
+            <TableContainer>
+              <Table sx={{ width: 800 }} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data?.result.map((row) => (
+                    <TableRow
+                      key={row._id}
+                      onDoubleClick={() => dubleClick(row)}
+                    >
+                      <TableCell style={{ cursor: "pointer" }}>
+                        {row.name}
+                      </TableCell>
+                      <TableCell style={{ cursor: "pointer" }}>
+                        {row.description}
+                      </TableCell>
+                      <TableCell style={{ cursor: "pointer" }}>
+                        {row.status}
+                      </TableCell>
+                      <TableCell>
+                        <ClearIcon style={{ cursor: "pointer" }} />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </>
       )}
     </Box>
   );

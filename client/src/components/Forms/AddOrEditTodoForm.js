@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddTodoForm = ({ submitForm, handleClose }) => {
+  const { currentTodo } = useSelector((state) => state.todos);
   const classes = useStyles();
 
   const TodoSchema = Yup.object().shape({
@@ -68,8 +70,8 @@ const AddTodoForm = ({ submitForm, handleClose }) => {
   return (
     <Formik
       initialValues={{
-        name: "",
-        description: "",
+        name: currentTodo ? currentTodo.name : "",
+        description: currentTodo ? currentTodo.description : "",
       }}
       validationSchema={TodoSchema}
       onSubmit={submitForm}

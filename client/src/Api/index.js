@@ -15,3 +15,12 @@ export const addTodo = async (variables, status) => {
   });
   return res.data;
 };
+
+export const changeTodo = async (variables, currentTodo) => {
+  const res = await axios.put(`/${currentTodo._id}`, {
+    name: variables.name,
+    description: variables.description,
+    status: currentTodo.status,
+  });
+  return res.data;
+};
