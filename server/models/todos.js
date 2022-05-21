@@ -9,7 +9,7 @@ const todOSchema = Schema(
       maxlength: 20,
       required: true,
     },
-    desctiption: {
+    description: {
       type: String,
       minlength: 3,
       maxlength: 255,
@@ -28,7 +28,7 @@ const Todo = model("todo", todOSchema);
 
 const todoJoiSchema = Joi.object({
   name: Joi.string().min(3).max(20).required(),
-  desctiption: Joi.string().min(3).max(255).required(),
+  description: Joi.string().min(3).max(255).required(),
   status: Joi.string().required(),
 });
 

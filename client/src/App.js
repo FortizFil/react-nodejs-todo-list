@@ -1,6 +1,14 @@
 import React from "react";
+
+import AppWrapper from "./components/AppWrapper";
+import TodosWrapper from "./components/TodosWrapper";
+
 function App() {
-  return <h1>Hello</h1>;
+  return (
+    <AppWrapper>
+      <TodosWrapper />
+    </AppWrapper>
+  );
 }
 
 export default App;
