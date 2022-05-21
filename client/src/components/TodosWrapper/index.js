@@ -6,8 +6,7 @@ import { makeStyles } from "@mui/styles";
 
 import TodosTable from "../TodosTable";
 import DefaultModal from "../Modal";
-import { addTodo, changeTodo } from "../../Api";
-import { TODO_STATUS } from "../../Constants";
+import { addTodo, changeTodo, removeTodo } from "../../Api";
 import { setModalType, setCurrentTodo } from "../../redux/todos";
 import { sagaActions } from "../../redux/saga/sagaAcions";
 
@@ -32,7 +31,7 @@ const TodosWrapper = () => {
   };
 
   const createTodo = async (variables) => {
-    const res = await addTodo(variables, TODO_STATUS[0].value);
+    const res = await addTodo(variables);
     if (res.status === "success") {
       dispatch({ type: sagaActions.FETCH_TODOS });
       closeModal();
@@ -42,6 +41,16 @@ const TodosWrapper = () => {
 
   const editTodo = async (variables) => {
     const res = await changeTodo(variables, currentTodo);
+    if (res.status === "success") {
+      dispatch({ type: sagaActions.FETCH_TODOS });
+      closeModal();
+      dispatch(setCurrentTodo(null));
+      dispatch(setModalType(""));
+    }
+  };
+
+  const deleteTodo = async () => {
+    const res = await removeTodo(currentTodo);
     if (res.status === "success") {
       dispatch({ type: sagaActions.FETCH_TODOS });
       closeModal();
@@ -82,6 +91,7 @@ const TodosWrapper = () => {
         handleClose={closeModal}
         createTodo={createTodo}
         editTodo={editTodo}
+        deleteTodo={deleteTodo}
       />
     </>
   );

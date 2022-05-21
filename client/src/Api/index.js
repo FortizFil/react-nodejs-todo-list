@@ -7,11 +7,11 @@ export const fetchData = async () => {
   return res.data.data;
 };
 
-export const addTodo = async (variables, status) => {
+export const addTodo = async (variables) => {
   const res = await axios.post("/", {
     name: variables.name,
     description: variables.description,
-    status,
+    status: variables.status,
   });
   return res.data;
 };
@@ -22,5 +22,10 @@ export const changeTodo = async (variables, currentTodo) => {
     description: variables.description,
     status: variables.status,
   });
+  return res.data;
+};
+
+export const removeTodo = async (currentTodo) => {
+  const res = await axios.delete(`/${currentTodo._id}`);
   return res.data;
 };

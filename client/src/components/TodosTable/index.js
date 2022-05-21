@@ -56,6 +56,12 @@ const TodosTable = ({ setOpenModal }) => {
     setOpenModal(true);
   };
 
+  const handleRemove = (row) => {
+    dispatch(setCurrentTodo(row));
+    dispatch(setModalType("delete"));
+    setOpenModal(true);
+  };
+
   return (
     <Box>
       {isLoading ? (
@@ -80,18 +86,30 @@ const TodosTable = ({ setOpenModal }) => {
                 </TableHead>
                 <TableBody>
                   {data?.result.map((row) => (
-                    <TableRow key={row._id} onClick={() => handleClick(row)}>
-                      <TableCell style={{ cursor: "pointer" }}>
+                    <TableRow key={row._id}>
+                      <TableCell
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick(row)}
+                      >
                         {row.name}
                       </TableCell>
-                      <TableCell style={{ cursor: "pointer" }}>
+                      <TableCell
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick(row)}
+                      >
                         {row.description}
                       </TableCell>
-                      <TableCell style={{ cursor: "pointer" }}>
+                      <TableCell
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick(row)}
+                      >
                         {row.status}
                       </TableCell>
                       <TableCell>
-                        <ClearIcon style={{ cursor: "pointer" }} />
+                        <ClearIcon
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleRemove(row)}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}

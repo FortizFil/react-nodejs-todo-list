@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import AddOrEditTodoForm from "../Forms/AddOrEditTodoForm";
+import DeleteModal from "./DeleteModal";
 
 const style = {
   position: "absolute",
@@ -15,7 +16,13 @@ const style = {
   p: 4,
 };
 
-const DefaultModal = ({ open, handleClose, createTodo, editTodo }) => {
+const DefaultModal = ({
+  open,
+  handleClose,
+  createTodo,
+  editTodo,
+  deleteTodo,
+}) => {
   const { modalType } = useSelector((state) => state.todos);
   return (
     <Modal
@@ -30,12 +37,14 @@ const DefaultModal = ({ open, handleClose, createTodo, editTodo }) => {
             handleClose={handleClose}
             submitForm={createTodo}
           />
-        ) : (
+        ) : modalType === "edit" ? (
           <AddOrEditTodoForm
             handleClose={handleClose}
             submitForm={editTodo}
             edit
           />
+        ) : (
+          <DeleteModal handleClose={handleClose} submit={deleteTodo} />
         )}
       </Box>
     </Modal>

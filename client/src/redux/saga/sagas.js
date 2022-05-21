@@ -1,6 +1,6 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, all } from "redux-saga/effects";
 import { fetchSuccess, setIsLoading, fetchError } from "../todos";
-import { fetchData, addTodo } from "../../Api";
+import { fetchData } from "../../Api";
 import { sagaActions } from "./sagaAcions";
 
 function* fetchTodos() {
@@ -15,8 +15,10 @@ function* fetchTodos() {
   }
 }
 
-function* mySaga() {
+function* fetchTodosSaga() {
   yield takeLatest(sagaActions.FETCH_TODOS, fetchTodos);
 }
 
-export default mySaga;
+export default function* rootSaga() {
+  yield all([fetchTodosSaga()]);
+}

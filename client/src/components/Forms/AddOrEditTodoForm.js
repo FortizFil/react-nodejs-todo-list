@@ -81,7 +81,7 @@ const AddOrEditTodoForm = ({ submitForm, handleClose, edit }) => {
       initialValues={{
         name: currentTodo ? currentTodo.name : "",
         description: currentTodo ? currentTodo.description : "",
-        status: currentTodo?.status,
+        status: currentTodo ? currentTodo.status : TODO_STATUS[0].value,
       }}
       validationSchema={TodoSchema}
       onSubmit={submitForm}
