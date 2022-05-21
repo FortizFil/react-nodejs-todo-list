@@ -3,8 +3,17 @@ import { useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-import { Box, Typography, InputLabel, TextField, Button } from "@mui/material";
+import {
+  Box,
+  InputLabel,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
+
+import { TODO_STATUS } from "../../Constants";
 
 const useStyles = makeStyles((theme) => ({
   editFieldsWrap: {
@@ -36,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddTodoForm = ({ submitForm, handleClose }) => {
+const AddOrEditTodoForm = ({ submitForm, handleClose, edit }) => {
   const { currentTodo } = useSelector((state) => state.todos);
   const classes = useStyles();
 
@@ -72,12 +81,13 @@ const AddTodoForm = ({ submitForm, handleClose }) => {
       initialValues={{
         name: currentTodo ? currentTodo.name : "",
         description: currentTodo ? currentTodo.description : "",
+        status: currentTodo?.status,
       }}
       validationSchema={TodoSchema}
       onSubmit={submitForm}
     >
       {({
-        values: { name, description },
+        values: { name, description, status },
         setFieldValue,
         errors,
         touched,
@@ -137,8 +147,37 @@ const AddTodoForm = ({ submitForm, handleClose }) => {
                 />
               </Box>
             </Box>
+            {edit && (
+              <Box
+                className={classes.formFieldWrap}
+                style={{ marginTop: "5px" }}
+              >
+                <Box className={classes.formField}>
+                  <InputLabel htmlFor="status" className={classes.label}>
+                    Status
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={status}
+                    style={{ width: "100%", padding: 0, height: "38.62px" }}
+                    onChange={(e) => setFieldValue("status", e.target.value)}
+                  >
+                    {TODO_STATUS.map((el) => (
+                      <MenuItem value={el.value} key={el.value}>
+                        {el.text}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Box>
+              </Box>
+            )}
             <Box
-              sx={{ display: "flex", justifyContent: "end", alignItems: "end" }}
+              sx={{
+                display: "flex",
+                justifyContent: "end",
+                alignItems: "end",
+              }}
             >
               <Button variant="outlined" onClick={handleClose}>
                 Cansel
@@ -158,4 +197,4 @@ const AddTodoForm = ({ submitForm, handleClose }) => {
   );
 };
 
-export default AddTodoForm;
+export default AddOrEditTodoForm;

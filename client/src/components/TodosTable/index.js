@@ -27,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
 
 const columns = [
   { id: "name", label: "Name", minWidth: 200 },
-  { id: "description", label: "Description", minWidth: 500 },
+  { id: "description", label: "Description", minWidth: 450 },
   {
     id: "status",
     label: "Status",
-    minWidth: 50,
+    minWidth: 100,
   },
   {
     id: "action",
@@ -50,11 +50,12 @@ const TodosTable = ({ setOpenModal }) => {
     dispatch({ type: sagaActions.FETCH_TODOS });
   }, []);
 
-  const dubleClick = (row) => {
+  const handleClick = (row) => {
     dispatch(setCurrentTodo(row));
     dispatch(setModalType("edit"));
     setOpenModal(true);
   };
+
   return (
     <Box>
       {isLoading ? (
@@ -79,10 +80,7 @@ const TodosTable = ({ setOpenModal }) => {
                 </TableHead>
                 <TableBody>
                   {data?.result.map((row) => (
-                    <TableRow
-                      key={row._id}
-                      onDoubleClick={() => dubleClick(row)}
-                    >
+                    <TableRow key={row._id} onClick={() => handleClick(row)}>
                       <TableCell style={{ cursor: "pointer" }}>
                         {row.name}
                       </TableCell>
