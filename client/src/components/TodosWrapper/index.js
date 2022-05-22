@@ -18,6 +18,15 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
     marginRight: "auto",
   },
+  headerWrapper: {
+    width: "60%",
+    display: "flex",
+    marginLeft: "auto",
+    marginRight: "auto",
+    padding: "15px",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
 }));
 
 const TodosWrapper = () => {
@@ -69,19 +78,10 @@ const TodosWrapper = () => {
   return (
     <>
       <Box className={classes.wrapper}>
-        <Box
-          sx={{
-            width: "60%",
-            display: "flex",
-            marginLeft: "auto",
-            marginRight: "auto",
-            padding: "15px",
-            justifyContent: "space-between",
-          }}
-        >
+        <Box className={classes.headerWrapper}>
           <SearchInput />
           <Statistic />
-          <Button variant="contained" onClick={handleClick}>
+          <Button variant="outlined" onClick={handleClick}>
             Add new todo
           </Button>
         </Box>

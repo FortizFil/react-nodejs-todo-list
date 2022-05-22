@@ -8,8 +8,12 @@ const Statistic = () => {
 
   return (
     <Box>
-      <Typography>All todos: {data.allTodos}</Typography>
-      <Typography>Complete todos: {data.completeTodos}</Typography>
+      <Typography sx={{ fontWeight: "bold" }}>
+        All todos: {data?.allTodos}
+      </Typography>
+      <Typography sx={{ fontWeight: "bold" }}>
+        Complete todos: {data?.completeTodos}
+      </Typography>
     </Box>
   );
 };

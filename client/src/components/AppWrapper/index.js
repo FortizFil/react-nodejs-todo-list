@@ -8,6 +8,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 15,
     paddingRight: 15,
     textAlign: "center",
+    // backgroundColor: "#0093E9",
+    // height: "100%",
+    // backgroundImage: "linear - gradient(160deg, #0093E9 0%, #80D0C7 100%)",
   },
 }));
 
