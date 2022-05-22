@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Box, CircularProgress } from "@mui/material";
@@ -11,6 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ClearIcon from "@mui/icons-material/Clear";
+import TablePagination from "@mui/material/TablePagination";
 import { makeStyles } from "@mui/styles";
 
 import { setCurrentTodo, setModalType } from "../../redux/todos";
@@ -49,6 +50,19 @@ const TodosTable = ({ setOpenModal }) => {
 
   const classes = useStyles();
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleChangeRowsPerPage = (event) => {
+    console.log(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
   useEffect(() => {
     dispatch({ type: sagaActions.FETCH_TODOS });
   }, []);
@@ -78,65 +92,81 @@ const TodosTable = ({ setOpenModal }) => {
         <CircularProgress />
       ) : (
         <>
-          <Paper className={classes.listWrapper}>
-            <TableContainer>
-              <Table sx={{ width: 800 }} aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        align={column.align}
-                        style={{ minWidth: column.minWidth }}
-                      >
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filteredData?.map((row, index) => (
-                    <TableRow key={row._id}>
-                      <TableCell
-                        align="center"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick(row)}
-                      >
-                        {index + 1}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick(row)}
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick(row)}
-                      >
-                        {row.description}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick(row)}
-                      >
-                        {row.status}
-                      </TableCell>
-                      <TableCell align="center">
-                        <ClearIcon
-                          style={{ cursor: "pointer" }}
-                          onClick={() => handleRemove(row)}
-                        />
-                      </TableCell>
+          {filteredData && (
+            <Paper className={classes.listWrapper}>
+              <TableContainer>
+                <Table sx={{ width: 800 }} aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      {columns.map((column) => (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{ minWidth: column.minWidth }}
+                        >
+                          {column.label}
+                        </TableCell>
+                      ))}
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
+                  </TableHead>
+                  <TableBody>
+                    {filteredData
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row, index) => (
+                        <TableRow key={row._id}>
+                          <TableCell
+                            align="center"
+                            style={{ cursor: "pointer", padding: "10px" }}
+                            onClick={() => handleClick(row)}
+                          >
+                            {index + 1}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            style={{ cursor: "pointer", padding: "10px" }}
+                            onClick={() => handleClick(row)}
+                          >
+                            {row.name}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            style={{ cursor: "pointer", padding: "10px" }}
+                            onClick={() => handleClick(row)}
+                          >
+                            {row.description}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            style={{ cursor: "pointer", padding: "10px" }}
+                            onClick={() => handleClick(row)}
+                          >
+                            {row.status}
+                          </TableCell>
+                          <TableCell align="center" style={{ padding: "10px" }}>
+                            <ClearIcon
+                              style={{ cursor: "pointer" }}
+                              onClick={() => handleRemove(row)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10]}
+                component="div"
+                count={filteredData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Paper>
+          )}
         </>
       )}
     </Box>
