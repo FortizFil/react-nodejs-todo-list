@@ -13,6 +13,7 @@ const DeleteModal = ({ submit, handleClose }) => {
           display: "flex",
           justifyContent: "end",
           alignItems: "end",
+          marginTop: "10px",
         }}
       >
         <Button variant="outlined" onClick={handleClose}>

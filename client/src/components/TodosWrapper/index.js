@@ -7,6 +7,7 @@ import { makeStyles } from "@mui/styles";
 import TodosTable from "../TodosTable";
 import DefaultModal from "../Modal";
 import SearchInput from "../SearchInput";
+import Statistic from "../Statistic";
 import { addTodo, changeTodo, removeTodo } from "../../Api";
 import { setModalType, setCurrentTodo } from "../../redux/todos";
 import { sagaActions } from "../../redux/saga/sagaAcions";
@@ -79,12 +80,14 @@ const TodosWrapper = () => {
           }}
         >
           <SearchInput />
+          <Statistic />
           <Button variant="contained" onClick={handleClick}>
             Add new todo
           </Button>
         </Box>
         <TodosTable setOpenModal={setOpenModal} />
       </Box>
+
       <DefaultModal
         open={openModal}
         handleClose={closeModal}
