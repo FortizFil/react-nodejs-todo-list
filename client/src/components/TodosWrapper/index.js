@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 import { Box, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -44,6 +45,7 @@ const TodosWrapper = () => {
   const createTodo = async (variables) => {
     const res = await addTodo(variables);
     if (res.status === "success") {
+      Swal.fire("Good job!", "Todo has been added", "success");
       dispatch({ type: sagaActions.FETCH_TODOS });
       closeModal();
       dispatch(setModalType(""));
@@ -53,6 +55,7 @@ const TodosWrapper = () => {
   const editTodo = async (variables) => {
     const res = await changeTodo(variables, currentTodo);
     if (res.status === "success") {
+      Swal.fire("Good job!", "Todo has been edited", "success");
       dispatch({ type: sagaActions.FETCH_TODOS });
       closeModal();
       dispatch(setCurrentTodo(null));
@@ -63,6 +66,7 @@ const TodosWrapper = () => {
   const deleteTodo = async () => {
     const res = await removeTodo(currentTodo);
     if (res.status === "success") {
+      Swal.fire("Good job!", "Todo has been deleted", "success");
       dispatch({ type: sagaActions.FETCH_TODOS });
       closeModal();
       dispatch(setCurrentTodo(null));
