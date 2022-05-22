@@ -86,88 +86,87 @@ const TodosTable = ({ setOpenModal }) => {
         el.description.toLowerCase().includes(filterParam.toLowerCase())
   );
 
+  if (isLoading) {
+    return (
+      <Box>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Box>
-      {isLoading ? (
-        <CircularProgress />
-      ) : (
-        <>
-          {filteredData && (
-            <Paper className={classes.listWrapper}>
-              <TableContainer>
-                <Table sx={{ width: 800 }} aria-label="customized table">
-                  <TableHead>
-                    <TableRow>
-                      {columns.map((column) => (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={{ minWidth: column.minWidth }}
-                        >
-                          {column.label}
-                        </TableCell>
-                      ))}
+      {filteredData && (
+        <Paper className={classes.listWrapper}>
+          <TableContainer>
+            <Table sx={{ width: 800 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {filteredData
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => (
+                    <TableRow key={row._id}>
+                      <TableCell
+                        align="center"
+                        style={{ cursor: "pointer", padding: "10px" }}
+                        onClick={() => handleClick(row)}
+                      >
+                        {index + 1}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{ cursor: "pointer", padding: "10px" }}
+                        onClick={() => handleClick(row)}
+                      >
+                        {row.name}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{ cursor: "pointer", padding: "10px" }}
+                        onClick={() => handleClick(row)}
+                      >
+                        {row.description}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{ cursor: "pointer", padding: "10px" }}
+                        onClick={() => handleClick(row)}
+                      >
+                        {row.status}
+                      </TableCell>
+                      <TableCell align="center" style={{ padding: "10px" }}>
+                        <ClearIcon
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleRemove(row)}
+                        />
+                      </TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {filteredData
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((row, index) => (
-                        <TableRow key={row._id}>
-                          <TableCell
-                            align="center"
-                            style={{ cursor: "pointer", padding: "10px" }}
-                            onClick={() => handleClick(row)}
-                          >
-                            {index + 1}
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            style={{ cursor: "pointer", padding: "10px" }}
-                            onClick={() => handleClick(row)}
-                          >
-                            {row.name}
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            style={{ cursor: "pointer", padding: "10px" }}
-                            onClick={() => handleClick(row)}
-                          >
-                            {row.description}
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            style={{ cursor: "pointer", padding: "10px" }}
-                            onClick={() => handleClick(row)}
-                          >
-                            {row.status}
-                          </TableCell>
-                          <TableCell align="center" style={{ padding: "10px" }}>
-                            <ClearIcon
-                              style={{ cursor: "pointer" }}
-                              onClick={() => handleRemove(row)}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[5, 10]}
-                component="div"
-                count={filteredData.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </Paper>
-          )}
-        </>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10]}
+            component="div"
+            count={filteredData.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
       )}
     </Box>
   );
