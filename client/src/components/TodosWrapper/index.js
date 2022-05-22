@@ -81,7 +81,11 @@ const TodosWrapper = () => {
         <Box className={classes.headerWrapper}>
           <SearchInput />
           <Statistic />
-          <Button variant="outlined" onClick={handleClick}>
+          <Button
+            variant="outlined"
+            onClick={handleClick}
+            sx={{ color: "black", borderColor: "black" }}
+          >
             Add new todo
           </Button>
         </Box>

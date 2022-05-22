@@ -19,24 +19,27 @@ import { sagaActions } from "../../redux/saga/sagaAcions";
 const useStyles = makeStyles((theme) => ({
   listWrapper: {
     display: "block",
-    width: "920px",
+    width: "950px",
     marginLeft: "auto",
     marginRight: "auto",
   },
 }));
 
 const columns = [
-  { id: "name", label: "Name", minWidth: 200 },
-  { id: "description", label: "Description", minWidth: 450 },
+  { id: "number", label: "#", minWidth: 10, align: "center" },
+  { id: "name", label: "Name", minWidth: 200, align: "center" },
+  { id: "description", label: "Description", minWidth: 430, align: "center" },
   {
     id: "status",
     label: "Status",
     minWidth: 100,
+    align: "center",
   },
   {
     id: "action",
-    label: "Action",
+    label: "Delete",
     minWidth: 10,
+    align: "center",
   },
 ];
 
@@ -92,27 +95,37 @@ const TodosTable = ({ setOpenModal }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredData?.map((row) => (
+                  {filteredData?.map((row, index) => (
                     <TableRow key={row._id}>
                       <TableCell
+                        align="center"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick(row)}
+                      >
+                        {index + 1}
+                      </TableCell>
+                      <TableCell
+                        align="center"
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick(row)}
                       >
                         {row.name}
                       </TableCell>
                       <TableCell
+                        align="center"
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick(row)}
                       >
                         {row.description}
                       </TableCell>
                       <TableCell
+                        align="center"
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick(row)}
                       >
                         {row.status}
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <ClearIcon
                           style={{ cursor: "pointer" }}
                           onClick={() => handleRemove(row)}
